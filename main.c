@@ -17,12 +17,22 @@ int main(int argc, char **argv) {
   case 'h': {
     puts("This is a ToDo list CLI utility written in C because uni is boring.\n"
          "Only the first character of commands are taken into account.\n"
-         "  (Yes, 'cbloop' will count as 'create')\n");
-    puts("Commands:\n"
-         "  c create (title) [description]    Create a task.\n"
-         "  g get [n]                         Show all or the nth last tasks.\n"
-         "  d delete (title)                  Delete task with title\n"
+         "  (Yes, 'cbloop' will count as 'create')\n"
+         "Tasks are displayed using g (get).\n"
+         "The format is as follows:\n"
+         "INDEX - TITLE\n\tDESCRIPTION\n"
+         "Commands:\n"
+         "  c create <title> [description]    Create a new task.\n"
+         "  g get [page]                      Show tasks. 10 tasks per page.\n"
+         "  d delete <start> [end]            Delete a single task or a range.\n"
          "  h help                            Show this menu.");
+    printf("\nExemples:\n"
+           "  %s c \"Push Project\"\n"
+           "  %s c \"Fix bug\" \"Fix the memory leak in the scraper.\"\n"
+           "  %s g 1    (show page 1 of tasks)\n"
+           "  %s d 4    (delete task with index 4)\n"
+           "  %s d 3 9  (delete tasks 3 to 9, both included)\n", 
+           argv[0], argv[0], argv[0], argv[0], argv[0]);
     break;
   }
   case 'c': {
