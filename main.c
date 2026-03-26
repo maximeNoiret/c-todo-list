@@ -44,7 +44,12 @@ int main(int argc, char **argv) {
     break;
   }
   case 'd': {
-    // TODO: handle_delete(char *title);
+    if (argc < 3) {
+      fputs("Incorrest use. Delete requires one argument (id)\n", stderr);
+      return 1;
+    }
+    unsigned id = strtoul(argv[2], NULL, 10);
+    task_delete(db, id);
     break;
   }
   default: {
