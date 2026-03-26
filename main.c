@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
   switch (argv[1][0]) {
   case 'h': {
     puts("This is a ToDo list CLI utility written in C because uni is boring.\n"
-         "Only the first character of commands are taken into account.\n"
+         "Only the first character of commands is taken into account.\n"
          "  (Yes, 'cbloop' will count as 'create')\n"
          "Tasks are displayed using g (get).\n"
          "The format is as follows:\n"
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
          "  g get [page]                      Show tasks. 10 tasks per page.\n"
          "  d delete <start> [end]            Delete a single task or a range.\n"
          "  h help                            Show this menu.");
-    printf("\nExemples:\n"
+    printf("\nExamples:\n"
            "  %s c \"Push Project\"\n"
            "  %s c \"Fix bug\" \"Fix the memory leak in the scraper.\"\n"
            "  %s g 1    (show page 1 of tasks)\n"
