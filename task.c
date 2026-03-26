@@ -43,9 +43,19 @@ void get_tasks(sqlite3 *db, unsigned start_idx) {
                               -1, &statement, NULL);
   sqlite3_bind_int(statement, 1, (int)start_idx);
 
-  int return_code;
-  for (return_code = sqlite3_step(statement); return_code == SQLITE_ROW;
-       return_code = sqlite3_step(statement)) {
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return;
+  }
+
+  int return_code = sqlite3_step(statement);
+  if (return_code == SQLITE_DONE) {
+    puts("No tasks.");
+    sqlite3_finalize(statement);
+    return;
+  }
+
   for (; return_code == SQLITE_ROW; return_code = sqlite3_step(statement)) {
     int id = sqlite3_column_int(statement, 0);
     const unsigned char *title = sqlite3_column_text(statement, 1);
@@ -64,10 +74,15 @@ void task_delete(sqlite3 *db, int idx) {
                               -1, &statement, NULL);
   sqlite3_bind_int(statement, 1, idx);
 
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return;
+  }
+
   if (sqlite3_step(statement) != SQLITE_DONE) {
-    fputs("Delete Database Error.\n"
-          "Statement Step didn't return SQLITE_DONE",
-          stderr);
+    fprintf(stderr, "Delete Database Error: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
     exit(-1);
   }
 
