@@ -37,10 +37,10 @@ int main(int argc, char **argv) {
     break;
   }
   case 'g': {
-    unsigned page = (argc >= 3 ? strtoul(argv[2], NULL, 10) : 1);
-    if (page == 0)
-      page = 1;
-    get_tasks(db, (page - 1) * 10 + 1);
+    unsigned page = (argc >= 3 ? strtoul(argv[2], NULL, 10) : 0);
+    if (page > 0)
+      --page;
+    get_tasks(db, page * 10);
     break;
   }
   case 'd': {
