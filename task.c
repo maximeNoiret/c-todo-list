@@ -10,7 +10,9 @@ void create_table(sqlite3 *db) {
                      "CREATE TABLE IF NOT EXISTS task ("
                      "idx INTEGER PRIMARY KEY,"
                      "title TEXT NOT NULL,"
-                     "desc TEXT);",
+                     "desc TEXT);"
+                     "CREATE TABLE IF NOT EXISTS free ("
+                     "idx INTEGER PRIMARY KEY);",
                      -1, &statement, NULL);
   sqlite3_step(statement);
   sqlite3_finalize(statement);
