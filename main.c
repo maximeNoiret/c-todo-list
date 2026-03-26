@@ -57,6 +57,7 @@ int main(int argc, char **argv) {
   case 'd': {
     if (argc < 3) {
       fputs("Incorrest use. Delete requires one argument (id)\n", stderr);
+      sqlite3_close(db);
       return 1;
     }
     unsigned id = strtoul(argv[2], NULL, 10);
