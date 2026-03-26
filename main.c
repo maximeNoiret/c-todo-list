@@ -67,6 +67,7 @@ int main(int argc, char **argv) {
   default: {
     fputs("Unknown argument.\n", stderr);
     fprintf(stderr, "Commands available with %s help\n", argv[0]);
+    sqlite3_close(db);
     return 1;
   }
   }
