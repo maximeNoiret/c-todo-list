@@ -83,8 +83,7 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "DELETE FROM task "
-                              "WHERE idx >= ? "
-                              "AND idx <= ?;",
+                              "WHERE idx BETWEEN ? AND ?;",
                               -1, &statement, NULL);
   sqlite3_bind_int(statement, 1, idx_start);
   sqlite3_bind_int(statement, 2, idx_end);
