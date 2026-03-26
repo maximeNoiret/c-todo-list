@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
   }
   sqlite3 *db;
   sqlite3_open("task.db", &db);
+  create_table(db);
   switch (argv[1][0]) {
   case 'h': {
     puts("This is a ToDo list CLI utility written in C because uni is boring.\n"

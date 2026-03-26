@@ -8,10 +8,13 @@ void create_table(sqlite3 *db) {
   sqlite3_stmt *statement;
   sqlite3_prepare_v2(db,
                      "CREATE TABLE IF NOT EXISTS task ("
-                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "idx INTEGER PRIMARY KEY AUTOINCREMENT,"
                      "title TEXT NOT NULL,"
-                     "description TEXT);",
+                     "desc TEXT);",
                      -1, &statement, NULL);
+  sqlite3_step(statement);
+  sqlite3_finalize(statement);
+  return;
 } // create_table
 
 void task_create(sqlite3 *db, char *title, char *desc) {
