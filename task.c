@@ -4,6 +4,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+void create_table(sqlite3 *db) {
+  sqlite3_stmt *statement;
+  sqlite3_prepare_v2(db,
+                     "CREATE TABLE IF NOT EXISTS task ("
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                     "title TEXT NOT NULL,"
+                     "description TEXT);",
+                     -1, &statement, NULL);
+} // create_table
+
 void task_create(sqlite3 *db, char *title, char *desc) {
   sqlite3_stmt *statement;
   sqlite3_prepare_v2(db,
