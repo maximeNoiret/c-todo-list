@@ -34,8 +34,8 @@ void task_create(sqlite3 *db, char *title, char *desc) {
     fprintf(stderr,
             "Create Database Error.\n"
             "Statement Step didn't return SQLITE_DONE\n"
-            "Expected %d, got %d\n",
-            SQLITE_DONE, return_code);
+            "Expected %d, got %d\n%s\n",
+            SQLITE_DONE, return_code, sqlite3_errmsg(db));
     exit(-1);
   }
 
