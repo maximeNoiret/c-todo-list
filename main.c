@@ -1,4 +1,7 @@
+#include "task.h"
+#include <sqlite3.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char **argv) {
   if (argc == 1) {
@@ -7,8 +10,10 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Commands available with %s help\n", argv[0]);
     return 1;
   }
+  sqlite3 *db;
+  sqlite3_open("task.db", &db);
   switch (argv[1][0]) {
-  case 'h':
+  case 'h': {
     puts("This is a ToDo list CLI utility written in C because uni is boring.\n"
          "Only the first character of commands are taken into account.\n"
          "  (Yes, 'cbloop' will count as 'create')\n");
@@ -18,19 +23,37 @@ int main(int argc, char **argv) {
          "  d delete (title)                  Delete task with title\n"
          "  h help                            Show this menu.");
     break;
-  case 'c':
-    // TODO: handle_create();
+  }
+  case 'c': {
+    if (argc < 3) {
+      fputs("Incorrect Usage.\n"
+            "Create requires 1 argument (title)\n"
+            "There is 1 optional argument [description]\n",
+            stderr);
+      sqlite3_close(db);
+      return 1;
+    }
+    task_create(db, argv[2], (argc >= 4 ? argv[3] : NULL));
     break;
-  case 'g':
-    // TODO: handle_get(int n);
+  }
+  case 'g': {
+    unsigned page = (argc >= 3 ? strtoul(argv[2], NULL, 10) : 1);
+    if (page == 0)
+      page = 1;
+    get_tasks(db, (page - 1) * 10 + 1);
     break;
-  case 'd':
+  }
+  case 'd': {
     // TODO: handle_delete(char *title);
     break;
-  default:
+  }
+  default: {
     fputs("Unknown argument.\n", stderr);
     fprintf(stderr, "Commands available with %s help\n", argv[0]);
     return 1;
   }
+  }
+
+  sqlite3_close(db);
   return 0;
 }

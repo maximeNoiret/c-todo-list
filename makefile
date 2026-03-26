@@ -1,9 +1,12 @@
 COMPILER = gcc
-CFLAGS = -Wall -Werror -g -fsanitize=address,undefined
+CFLAGS = -Wall -Werror -g -fsanitize=address,undefined -lsqlite3
 COMPILE_OBJECT = $(COMPILER) $(CFLAGS) -c $< -o $@
 
-main: main.o
+main: main.o task.o
 	$(COMPILER) $(CFLAGS) -o $@ $^
 
-main.o: main.c
+main.o: main.c task.h
+	$(COMPILE_OBJECT)
+
+task.o: task.c task.h
 	$(COMPILE_OBJECT)
