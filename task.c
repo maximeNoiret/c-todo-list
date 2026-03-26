@@ -79,13 +79,16 @@ void get_tasks(sqlite3 *db, unsigned start_idx) {
   sqlite3_finalize(statement);
 }
 
-void task_delete(sqlite3 *db, int idx) {
+void task_delete(sqlite3 *db, int idx_start, int idx_end) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "DELETE FROM task "
-                              "WHERE idx = ?;",
+                              "WHERE idx >= ? "
+                              "AND idx <= ?;",
                               -1, &statement, NULL);
-  sqlite3_bind_int(statement, 1, idx);
+  sqlite3_bind_int(statement, 1, idx_start);
+  sqlite3_bind_int(statement, 2, idx_end);
+
 
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));

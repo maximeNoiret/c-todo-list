@@ -60,8 +60,9 @@ int main(int argc, char **argv) {
       sqlite3_close(db);
       return 1;
     }
-    unsigned id = strtoul(argv[2], NULL, 10);
-    task_delete(db, id);
+    unsigned idx_start = strtoul(argv[2], NULL, 10);
+    unsigned idx_end = (argc >= 4 ? strtoul(argv[3], NULL, 10) : idx_start);
+    task_delete(db, idx_start, idx_end);
     break;
   }
   default: {
