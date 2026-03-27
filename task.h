@@ -9,5 +9,6 @@ void task_create(sqlite3 *db, char *title, char *desc);
 void task_print(int id, const unsigned char *title, const unsigned char *desc);
 void get_tasks(sqlite3 *db, unsigned start_idx);
 void task_delete(sqlite3 *db, int idx_start, int idx_end);
+void task_edit(sqlite3 *db, int idx, char *title, char *desc);
 
 #endif // TASK_H_

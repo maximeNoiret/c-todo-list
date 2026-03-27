@@ -105,3 +105,30 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
 
   sqlite3_finalize(statement);
 } // task_delete
+
+void task_edit(sqlite3 *db, int idx, char *title, char *desc) {
+  sqlite3_stmt *statement;
+
+  int rc = sqlite3_prepare_v2(db,
+                              "UPDATE task SET title = ?, desc = ? "
+                              "WHERE idx = ?;",
+                              -1, &statement, NULL);
+  sqlite3_bind_text(statement, 1, title, strlen(title), SQLITE_STATIC);
+  if (desc)
+    sqlite3_bind_text(statement, 2, desc, strlen(desc), SQLITE_STATIC);
+  else
+    sqlite3_bind_null(statement, 2);
+  sqlite3_bind_int(statement, 3, idx);
+
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Editing - Problem during preparation: %s\n",
+            sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return;
+  }
+
+  if (sqlite3_step(statement) != SQLITE_DONE) {
+    fprintf(stderr, "Editing - Problem during step: %s\n", sqlite3_errmsg(db));
+  }
+  sqlite3_finalize(statement);
+}

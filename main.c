@@ -66,6 +66,17 @@ int main(int argc, char **argv) {
     task_delete(db, idx_start, idx_end);
     break;
   }
+  case 'e': {
+    if (argc < 4) {
+      fputs("Incorrect use. Editing requires 2 arguments (id, title)\n",
+            stderr);
+      sqlite3_close(db);
+      return 1;
+    }
+    int idx = strtoul(argv[2], NULL, 10);
+    task_edit(db, idx, argv[3], (argc >= 5 ? argv[4] : NULL));
+    break;
+  }
   default: {
     fputs("Unknown argument.\n", stderr);
     fprintf(stderr, "Commands available with %s help\n", argv[0]);
