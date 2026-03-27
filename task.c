@@ -38,6 +38,7 @@ void task_create(sqlite3 *db, char *title, char *desc) {
             "Statement Step didn't return SQLITE_DONE\n"
             "Expected %d, got %d\n%s\n",
             SQLITE_DONE, return_code, sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
     exit(-1);
   }
 
@@ -89,7 +90,6 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
                               -1, &statement, NULL);
   sqlite3_bind_int(statement, 1, idx_start);
   sqlite3_bind_int(statement, 2, idx_end);
-
 
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
