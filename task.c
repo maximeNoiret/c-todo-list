@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void get_index(sqlite3 *db) {
+int get_index(sqlite3 *db) {
   // TODO: implement getting the min index from 'free'
   //       OR, get MAX(idx) + 1 from 'task'
+  return 0;
 } // get_index
 
 void create_table(sqlite3 *db) {
