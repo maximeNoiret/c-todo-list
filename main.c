@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
            "  %s c \"Fix bug\" \"Fix the memory leak in the scraper.\"\n"
            "  %s g 1    (show page 1 of tasks)\n"
            "  %s d 4    (delete task with index 4)\n"
-           "  %s d 3 9  (delete tasks 3 to 9, both included)\n", 
+           "  %s d 3 9  (delete tasks 3 to 9, both included)\n",
            argv[0], argv[0], argv[0], argv[0], argv[0]);
     break;
   }
