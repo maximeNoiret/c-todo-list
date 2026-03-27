@@ -99,6 +99,23 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
     sqlite3_finalize(statement);
     exit(-1);
   }
+  // Add all indexes into "free"
+  for (int idx = idx_start; idx <= idx_end; ++idx) {
+    sqlite3_finalize(statement);
+    rc = sqlite3_prepare_v2(db, "INSERT OR IGNORE INTO free VALUES (?);", -1,
+                            &statement, NULL);
+    sqlite3_bind_int(statement, 1, idx);
+    if (rc != SQLITE_OK) {
+      fprintf(stderr, "Add free Preparation Error: %s\n", sqlite3_errmsg(db));
+      sqlite3_finalize(statement);
+      return;
+    }
+    if (sqlite3_step(statement) != SQLITE_DONE) {
+      fprintf(stderr, "Add free Step Error: %s\n", sqlite3_errmsg(db));
+      sqlite3_finalize(statement);
+      return;
+    }
+  }
 
   sqlite3_finalize(statement);
 } // task_delete
