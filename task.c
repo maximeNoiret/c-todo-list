@@ -89,13 +89,13 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
   sqlite3_bind_int(statement, 2, idx_end);
 
   if (rc != SQLITE_OK) {
-    fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
+    fprintf(stderr, "Delete Preparation failed: %s\n", sqlite3_errmsg(db));
     sqlite3_finalize(statement);
     return;
   }
 
   if (sqlite3_step(statement) != SQLITE_DONE) {
-    fprintf(stderr, "Delete Database Error: %s\n", sqlite3_errmsg(db));
+    fprintf(stderr, "Delete Step Error: %s\n", sqlite3_errmsg(db));
     sqlite3_finalize(statement);
     exit(-1);
   }
