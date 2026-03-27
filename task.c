@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+void get_index(sqlite3 *db) {
+  // TODO: implement getting the min index from 'free'
+  //       OR, get MAX(idx) + 1 from 'task'
+} // get_index
+
 void create_table(sqlite3 *db) {
   sqlite3_exec(db,
                "CREATE TABLE IF NOT EXISTS task ("
@@ -77,7 +82,7 @@ void get_tasks(sqlite3 *db, unsigned start_idx) {
   }
 
   sqlite3_finalize(statement);
-}
+} // get_tasks
 
 void task_delete(sqlite3 *db, int idx_start, int idx_end) {
   sqlite3_stmt *statement;
@@ -145,4 +150,4 @@ void task_edit(sqlite3 *db, int idx, char *title, char *desc) {
     fprintf(stderr, "Editing - Problem during step: %s\n", sqlite3_errmsg(db));
   }
   sqlite3_finalize(statement);
-}
+} // task_edit
