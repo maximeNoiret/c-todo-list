@@ -22,7 +22,7 @@ unsigned get_free(sqlite3 *const db) {
   if (step_code == SQLITE_ROW) {
     unsigned idx = sqlite3_column_int(statement, 0);
     sqlite3_finalize(statement);
-    return idx;
+    return idx < 1 ? 0xDEADBEEF : idx;
   }
   sqlite3_finalize(statement);
   return 0xDEADBEEF;
@@ -30,7 +30,7 @@ unsigned get_free(sqlite3 *const db) {
 
 unsigned get_max_idx(sqlite3 *const db) {
   sqlite3_stmt *statement;
-  int rc = sqlite3_prepare_v2(db, "SELECT MAX(idx)+1 FROM task;", -1, &statement, NULL);
+  int rc = sqlite3_prepare_v2(db, "SELECT MAX(idx) FROM task;", -1, &statement, NULL);
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Get MAX Preparation failed: %s\n", sqlite3_errmsg(db));
     sqlite3_finalize(statement);
@@ -40,7 +40,7 @@ unsigned get_max_idx(sqlite3 *const db) {
   if (step_code == SQLITE_ROW) {
     unsigned idx = sqlite3_column_int(statement, 0);
     sqlite3_finalize(statement);
-    return idx;
+    return idx + 1;
   }
   sqlite3_finalize(statement);
   return 0xDEADBEEF;
