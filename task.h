@@ -29,7 +29,7 @@ void task_create(sqlite3 *const db, const char *const title,
  * @param db Pointer to sqlite3 database
  * @param start_idx Index from which to start listing.
  */
-void get_tasks(sqlite3 *const db, const int start_idx);
+void get_tasks(sqlite3 *const db, const unsigned page);
 
 /**
  * @brief Gets the details of a single task.

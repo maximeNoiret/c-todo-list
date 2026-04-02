@@ -99,13 +99,13 @@ void task_create(sqlite3 *const db, const char *title, const char *desc) {
   sqlite3_finalize(statement);
 } // task_create
 
-void get_tasks(sqlite3 *const db, const int start_idx) {
+void get_tasks(sqlite3 *const db, const unsigned page) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "SELECT idx, title, desc FROM task "
                               "LIMIT 10 OFFSET ?;",
                               -1, &statement, NULL);
-  sqlite3_bind_int(statement, 1, start_idx);
+  sqlite3_bind_int(statement, 1, page * 10);
 
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
@@ -119,7 +119,7 @@ void get_tasks(sqlite3 *const db, const int start_idx) {
     sqlite3_finalize(statement);
     return;
   }
-  head_print(start_idx / 10 + 1);
+  head_print(page+1);
   for (; return_code == SQLITE_ROW; return_code = sqlite3_step(statement)) {
     int id = sqlite3_column_int(statement, 0);
     const char *title = (const char *)sqlite3_column_text(statement, 1);

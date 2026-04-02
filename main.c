@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     unsigned page = (argc >= 3 ? strtoul(argv[2], NULL, 10) : 0);
     if (page > 0)
       --page;
-    get_tasks(db, page * 10);
+    get_tasks(db, page);
     break;
   }
   case 'l': {
