@@ -17,7 +17,7 @@ void task_print(int id, const char *title, const char *desc) {
   unsigned n = 0;
   bool is_long = false;
   if (desc) {
-    char *c = (char*)strchr(desc, '\n');
+    const char *c = strchr(desc, '\n');
     if (c) {
       n = (unsigned)(c - desc);
       is_long = true;
