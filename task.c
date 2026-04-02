@@ -1,8 +1,9 @@
-#include "task.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "task.h"
+#include "terminalManagement.h"
 
 int get_index(sqlite3 *db) {
   // TODO: implement getting the min index from 'free'
@@ -48,13 +49,9 @@ void task_create(sqlite3 *db, char *title, char *desc) {
   sqlite3_finalize(statement);
 } // task_create
 
-void task_print(int id, const unsigned char *title, const unsigned char *desc) {
-  printf("%d - %s\n"
-         "\t%s\n",
-         id, title, desc);
-} // task_print
 
-void get_tasks(sqlite3 *db, unsigned start_idx) {
+
+void get_tasks(sqlite3 *db, const int start_idx) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "SELECT idx, title, desc FROM task "
@@ -74,7 +71,7 @@ void get_tasks(sqlite3 *db, unsigned start_idx) {
     sqlite3_finalize(statement);
     return;
   }
-
+  head_print(start_idx / 10 + 1);
   for (; return_code == SQLITE_ROW; return_code = sqlite3_step(statement)) {
     int id = sqlite3_column_int(statement, 0);
     const unsigned char *title = sqlite3_column_text(statement, 1);
