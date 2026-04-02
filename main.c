@@ -1,3 +1,7 @@
+/**
+ * @author NOIRET Maxime
+ */
+
 #include "task.h"
 #include <sqlite3.h>
 #include <stdio.h>
