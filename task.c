@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/** @brief [INTERNAL] Gets the lowest free index in 'free' table.
+ *  @param[in] db Pointer to sqlite3 database
+ *  @author NOIRET Maxime
+ */
 unsigned get_free(sqlite3 *const db) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db, "SELECT MIN(idx) FROM free;", -1, &statement, NULL);
@@ -28,6 +32,10 @@ unsigned get_free(sqlite3 *const db) {
   return 0xDEADBEEF;
 } // get_free
 
+/** @brief [INTERNAL] Gets the the next available index in 'task' table.
+ *  @param[in] db Pointer to sqlite3 database
+ *  @author NOIRET Maxime
+ */
 unsigned get_max_idx(sqlite3 *const db) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db, "SELECT MAX(idx) FROM task;", -1, &statement, NULL);
@@ -46,6 +54,10 @@ unsigned get_max_idx(sqlite3 *const db) {
   return 0xDEADBEEF;
 }
 
+/** @brief [INTERNAL] Gets an available index.
+ *  @param[in] db Pointer to sqlite3 database
+ *  @author NOIRET Maxime
+ */
 unsigned get_index(sqlite3 *const db) {
   unsigned idx = get_free(db);
   if (idx == 0xDEADBEEF) {
