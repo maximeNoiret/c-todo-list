@@ -1,5 +1,5 @@
-/**
- * @author NOIRET Maxime
+/** @file main.c
+ *  @author NOIRET Maxime
  */
 
 #include "task.h"
@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
   create_table(db);
   switch (argv[1][0]) {
   case 'h': {
+    // TODO: Move this into a function in terminalManagement because this is silly having this in main :3
     puts("This is a ToDo list CLI utility written in C because uni is boring.\n"
          "Only the first character of commands is taken into account.\n"
          "  (Yes, 'cbloop' will count as 'create')\n"

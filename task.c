@@ -1,5 +1,5 @@
-/**
- * @author NOIRET Maxime
+/** @file task.c
+ *  @author NOIRET Maxime
  */
 
 #include "task.h"
@@ -26,7 +26,7 @@ unsigned get_free(sqlite3 *const db) {
   }
   sqlite3_finalize(statement);
   return 0xDEADBEEF;
-}
+} // get_free
 
 unsigned get_max_idx(sqlite3 *const db) {
   sqlite3_stmt *statement;
@@ -152,7 +152,7 @@ void task_lookup(sqlite3 *const db, const int idx) {
   const char *desc = (const char *)sqlite3_column_text(statement, 2);
   task_details(title, desc);
   sqlite3_finalize(statement);
-}
+} // task_lookup
 
 void task_delete(sqlite3 *const db, const int idx_start, const int idx_end) {
   sqlite3_stmt *statement;

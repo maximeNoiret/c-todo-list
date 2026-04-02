@@ -1,5 +1,5 @@
-/**
- * @author NOIRET Maxime
+/** @file terminalManagement.c
+ *  @author NOIRET Maxime
  */
 
 #include <stdio.h>
