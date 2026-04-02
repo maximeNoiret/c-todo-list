@@ -78,8 +78,8 @@ void get_tasks(sqlite3 *db, const int start_idx) {
   head_print(start_idx / 10 + 1);
   for (; return_code == SQLITE_ROW; return_code = sqlite3_step(statement)) {
     int id = sqlite3_column_int(statement, 0);
-    const unsigned char *title = sqlite3_column_text(statement, 1);
-    const unsigned char *desc = sqlite3_column_text(statement, 2);
+    const char *title = (const char*)sqlite3_column_text(statement, 1);
+    const char *desc  = (const char*)sqlite3_column_text(statement, 2);
     task_print(id, title, desc);
   }
 
@@ -105,8 +105,8 @@ void task_lookup(sqlite3 *db, const int idx) {
     sqlite3_finalize(statement);
     return;
   }
-  const unsigned char *title = sqlite3_column_text(statement, 1);
-  const unsigned char *desc = sqlite3_column_text(statement, 2);
+  const char *title = (const char*)sqlite3_column_text(statement, 1);
+  const char *desc  = (const char*)sqlite3_column_text(statement, 2);
   task_details(title, desc);
   sqlite3_finalize(statement);
 }

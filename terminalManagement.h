@@ -18,14 +18,14 @@ void head_print(const unsigned page);
  * @param title Title of the task
  * @param desc Description of the task
  */
-void task_print(int id, const unsigned char *title, const unsigned char *desc);
+void task_print(int id, const char *title, const char *desc);
 
 /**
  * @brief Prints the full title and description of a task.
  * @param title Title of the task
  * @param desc Description of the task
  */
-void task_details(const unsigned char *title, const unsigned char *desc);
+void task_details(const char *title, const char *desc);
 
 
 #endif // TERMINALMANAGEMENT_H_
