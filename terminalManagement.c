@@ -29,3 +29,8 @@ void task_print(int id, const unsigned char *title, const unsigned char *desc) {
   else putc('\n', stdout);
 } // task_print
 
+void task_details(const unsigned char *title, const unsigned char *desc) {
+  puts((const char*)title);
+  puts("-----");
+  puts((const char*)desc);
+} // task_details

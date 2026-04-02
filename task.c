@@ -83,6 +83,30 @@ void get_tasks(sqlite3 *db, const int start_idx) {
 } // get_tasks
 
 
+void task_lookup(sqlite3 *db, const int idx) {
+  sqlite3_stmt *statement;
+  int rc = sqlite3_prepare_v2(db,
+                              "SELECT idx, title, desc FROM task "
+                              "WHERE idx = ?;",
+                              -1, &statement, NULL);
+  sqlite3_bind_int(statement, 1, idx);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return;
+  }
+  int return_code = sqlite3_step(statement);
+  if (return_code == SQLITE_DONE) {
+    puts("Task doesn't exist.");
+    sqlite3_finalize(statement);
+    return;
+  }
+  const unsigned char *title = sqlite3_column_text(statement, 1);
+  const unsigned char *desc = sqlite3_column_text(statement, 2);
+  task_details(title, desc);
+  sqlite3_finalize(statement);
+}
+
 void task_delete(sqlite3 *db, const int idx_start, const int idx_end) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,

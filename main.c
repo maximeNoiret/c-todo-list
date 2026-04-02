@@ -58,6 +58,16 @@ int main(int argc, char **argv) {
     get_tasks(db, page * 10);
     break;
   }
+  case 'l': {
+    if (argc < 3) {
+      fputs("Incorrect use. Lookup requires one argument (id)\n", stderr);
+      sqlite3_close(db);
+      return 1;
+    }
+    unsigned idx = strtoul(argv[2], NULL, 10);
+    task_lookup(db, idx);
+    break;
+  }
   case 'd': {
     if (argc < 3) {
       fputs("Incorrect use. Delete requires one argument (id)\n", stderr);
