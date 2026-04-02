@@ -9,6 +9,7 @@
 
 /** @brief Prints the header before the list of tasks.
  *  @param[in] page Current page number.
+ *  @author NOIRET Maxime
  */
 void head_print(const unsigned page);
 
