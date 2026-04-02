@@ -9,10 +9,49 @@
 #include <stdlib.h>
 #include <string.h>
 
-int get_index(sqlite3 *const db) {
-  // TODO: implement getting the min index from 'free'
-  //       OR, get MAX(idx) + 1 from 'task'
-  return 0;
+unsigned get_free(sqlite3 *const db) {
+  sqlite3_stmt *statement;
+  int rc = sqlite3_prepare_v2(db, "SELECT MIN(idx) FROM free;", -1, &statement, NULL);
+
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Get Free Preparation failed: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return 0xDEADBEEF;
+  }
+  int step_code = sqlite3_step(statement);
+  if (step_code == SQLITE_ROW) {
+    unsigned idx = sqlite3_column_int(statement, 0);
+    sqlite3_finalize(statement);
+    return idx;
+  }
+  sqlite3_finalize(statement);
+  return 0xDEADBEEF;
+}
+
+unsigned get_max_idx(sqlite3 *const db) {
+  sqlite3_stmt *statement;
+  int rc = sqlite3_prepare_v2(db, "SELECT MAX(idx)+1 FROM task;", -1, &statement, NULL);
+  if (rc != SQLITE_OK) {
+    fprintf(stderr, "Get MAX Preparation failed: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(statement);
+    return 0xDEADBEEF;
+  }
+  int step_code = sqlite3_step(statement);
+  if (step_code == SQLITE_ROW) {
+    unsigned idx = sqlite3_column_int(statement, 0);
+    sqlite3_finalize(statement);
+    return idx;
+  }
+  sqlite3_finalize(statement);
+  return 0xDEADBEEF;
+}
+
+unsigned get_index(sqlite3 *const db) {
+  unsigned idx = get_free(db);
+  if (idx == 0xDEADBEEF) {
+    idx = get_max_idx(db);
+  }
+  return idx != 0xDEADBEEF ? idx : 1;
 } // get_index
 
 void create_table(sqlite3 *const db) {
@@ -27,17 +66,19 @@ void create_table(sqlite3 *const db) {
   return;
 } // create_table
 
-void task_create(sqlite3 *db, const char *title, const char *desc) {
+void task_create(sqlite3 *const db, const char *title, const char *desc) {
   sqlite3_stmt *statement;
   sqlite3_prepare_v2(db,
-                     "INSERT INTO task (title, desc) "
-                     "VALUES (?, ?);",
+                     "INSERT INTO task (idx, title, desc) "
+                     "VALUES (?, ?, ?);",
                      -1, &statement, NULL);
-  sqlite3_bind_text(statement, 1, title, strlen(title), SQLITE_STATIC);
+  unsigned idx = get_index(db);
+  sqlite3_bind_int(statement, 1, idx);
+  sqlite3_bind_text(statement, 2, title, strlen(title), SQLITE_STATIC);
   if (desc)
-    sqlite3_bind_text(statement, 2, desc, strlen(desc), SQLITE_STATIC);
+    sqlite3_bind_text(statement, 3, desc, strlen(desc), SQLITE_STATIC);
   else
-    sqlite3_bind_null(statement, 2);
+    sqlite3_bind_null(statement, 3);
 
   int return_code = sqlite3_step(statement);
   if (return_code != SQLITE_DONE) {
@@ -51,6 +92,11 @@ void task_create(sqlite3 *db, const char *title, const char *desc) {
   }
 
   sqlite3_finalize(statement);
+
+  sqlite3_prepare_v2(db, "DELETE FROM free WHERE idx = ?;", -1, &statement, NULL);
+  sqlite3_bind_int(statement, 1, idx);
+  sqlite3_step(statement);
+  sqlite3_finalize(statement);
 } // task_create
 
 void get_tasks(sqlite3 *const db, const int start_idx) {
@@ -59,7 +105,7 @@ void get_tasks(sqlite3 *const db, const int start_idx) {
                               "SELECT idx, title, desc FROM task "
                               "LIMIT 10 OFFSET ?;",
                               -1, &statement, NULL);
-  sqlite3_bind_int(statement, 1, (int)start_idx);
+  sqlite3_bind_int(statement, 1, start_idx);
 
   if (rc != SQLITE_OK) {
     fprintf(stderr, "Preparation failed: %s\n", sqlite3_errmsg(db));
