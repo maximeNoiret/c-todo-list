@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
   }
   case 'l': {
     if (argc < 3) {
-      fputs("Incorrect use. Lookup requires one argument (id)\n", stderr);
+      fputs("Incorrect Usage.\nLookup requires one argument (id)\n", stderr);
       sqlite3_close(db);
       return 1;
     }
