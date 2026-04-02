@@ -2,20 +2,20 @@
  * @author NOIRET Maxime
  */
 
+#include "task.h"
+#include "terminalManagement.h"
 #include <sqlite3.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "task.h"
-#include "terminalManagement.h"
 
-int get_index(sqlite3 *db) {
+int get_index(sqlite3 *const db) {
   // TODO: implement getting the min index from 'free'
   //       OR, get MAX(idx) + 1 from 'task'
   return 0;
 } // get_index
 
-void create_table(sqlite3 *db) {
+void create_table(sqlite3 *const db) {
   sqlite3_exec(db,
                "CREATE TABLE IF NOT EXISTS task ("
                "idx INTEGER PRIMARY KEY,"
@@ -53,9 +53,7 @@ void task_create(sqlite3 *db, const char *title, const char *desc) {
   sqlite3_finalize(statement);
 } // task_create
 
-
-
-void get_tasks(sqlite3 *db, const int start_idx) {
+void get_tasks(sqlite3 *const db, const int start_idx) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "SELECT idx, title, desc FROM task "
@@ -78,16 +76,15 @@ void get_tasks(sqlite3 *db, const int start_idx) {
   head_print(start_idx / 10 + 1);
   for (; return_code == SQLITE_ROW; return_code = sqlite3_step(statement)) {
     int id = sqlite3_column_int(statement, 0);
-    const char *title = (const char*)sqlite3_column_text(statement, 1);
-    const char *desc  = (const char*)sqlite3_column_text(statement, 2);
+    const char *title = (const char *)sqlite3_column_text(statement, 1);
+    const char *desc = (const char *)sqlite3_column_text(statement, 2);
     task_print(id, title, desc);
   }
 
   sqlite3_finalize(statement);
 } // get_tasks
 
-
-void task_lookup(sqlite3 *db, const int idx) {
+void task_lookup(sqlite3 *const db, const int idx) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "SELECT idx, title, desc FROM task "
@@ -105,13 +102,13 @@ void task_lookup(sqlite3 *db, const int idx) {
     sqlite3_finalize(statement);
     return;
   }
-  const char *title = (const char*)sqlite3_column_text(statement, 1);
-  const char *desc  = (const char*)sqlite3_column_text(statement, 2);
+  const char *title = (const char *)sqlite3_column_text(statement, 1);
+  const char *desc = (const char *)sqlite3_column_text(statement, 2);
   task_details(title, desc);
   sqlite3_finalize(statement);
 }
 
-void task_delete(sqlite3 *db, const int idx_start, const int idx_end) {
+void task_delete(sqlite3 *const db, const int idx_start, const int idx_end) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "DELETE FROM task "
@@ -152,7 +149,8 @@ void task_delete(sqlite3 *db, const int idx_start, const int idx_end) {
   sqlite3_finalize(statement);
 } // task_delete
 
-void task_edit(sqlite3 *db, const int idx, const char *title, const char *desc) {
+void task_edit(sqlite3 *const db, const int idx, const char *const title,
+               const char *const desc) {
   sqlite3_stmt *statement;
 
   int rc = sqlite3_prepare_v2(db,
