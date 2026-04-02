@@ -26,21 +26,24 @@ int main(int argc, char **argv) {
          "The format is as follows:\n"
          "INDEX - TITLE\n\tDESCRIPTION\n"
          "Commands:\n"
-         "  c create <title> [description]       Create a new task.\n"
-         "  g get [page]                         Show tasks. 10 tasks per "
-         "page.\n"
-         "  e edit <id> <title> [description]    Edit an existing task.\n"
-         "  d delete <start> [end]               Delete a single task or a "
-         "range.\n"
+         "  c create <title> [description]       Create a new task.\n\n"
+         "  g get [page]                         Show a shortened tasks.\n"
+         "                                       10 tasks per page.\n\n"
+         "  l lookup <id>                        Show a single task with\n"
+         "                                       full details.\n\n"
+         "  e edit <id> <title> [description]    Edit an existing task.\n\n"
+         "  d delete <start> [end]               Delete a single task or a\n"
+         "                                       range of tasks.\n\n"
          "  h help                               Show this menu.");
     printf("\nExamples:\n"
            "  %s c \"Push Project\"\n"
            "  %s c \"Fix bug\" \"Fix the memory leak in the scraper.\"\n"
            "  %s e 1 \"new title\" \"new description\"\n"
            "  %s g 1         (show page 1 of tasks)\n"
+           "  %s l 2         (show details of task with index 2\n"
            "  %s d 4         (delete task with index 4)\n"
            "  %s d 3 9       (delete tasks 3 to 9, both included)\n",
-           argv[0], argv[0], argv[0], argv[0], argv[0], argv[0]);
+           argv[0], argv[0], argv[0], argv[0], argv[0], argv[0], argv[0]);
     break;
   }
   case 'c': {
