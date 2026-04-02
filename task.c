@@ -23,7 +23,7 @@ void create_table(sqlite3 *db) {
   return;
 } // create_table
 
-void task_create(sqlite3 *db, char *title, char *desc) {
+void task_create(sqlite3 *db, const char *title, const char *desc) {
   sqlite3_stmt *statement;
   sqlite3_prepare_v2(db,
                      "INSERT INTO task (title, desc) "
@@ -82,7 +82,8 @@ void get_tasks(sqlite3 *db, const int start_idx) {
   sqlite3_finalize(statement);
 } // get_tasks
 
-void task_delete(sqlite3 *db, int idx_start, int idx_end) {
+
+void task_delete(sqlite3 *db, const int idx_start, const int idx_end) {
   sqlite3_stmt *statement;
   int rc = sqlite3_prepare_v2(db,
                               "DELETE FROM task "
@@ -123,7 +124,7 @@ void task_delete(sqlite3 *db, int idx_start, int idx_end) {
   sqlite3_finalize(statement);
 } // task_delete
 
-void task_edit(sqlite3 *db, int idx, char *title, char *desc) {
+void task_edit(sqlite3 *db, const int idx, const char *title, const char *desc) {
   sqlite3_stmt *statement;
 
   int rc = sqlite3_prepare_v2(db,
