@@ -7,10 +7,9 @@
 
 
 void head_print(const unsigned page) {
-  printf("Pg %d - %15s - Description\n", page, "Title");
-  for (unsigned i = 0; i < 37; ++i)
-    putc('-', stdout);
-  putc('\n', stdout);
+  printf("Page %d\n", page);
+  puts("  Id -           Title - Descritpion\n"
+       "------------------------------------");
 } // head_print
 
 
