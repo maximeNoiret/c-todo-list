@@ -2,16 +2,15 @@
  *  @author NOIRET Maxime
  */
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
 
 void head_print(const unsigned page) {
   printf("Page %d\n", page);
   puts("  Id -           Title - Descritpion\n"
        "------------------------------------");
 } // head_print
-
 
 void task_print(int id, const char *title, const char *desc) {
   unsigned n = 0;
@@ -21,8 +20,7 @@ void task_print(int id, const char *title, const char *desc) {
     if (c) {
       n = (unsigned)(c - desc);
       is_long = true;
-    }
-    else
+    } else
       n = strlen(desc);
     if (n > 30) {
       n = 30;
@@ -30,14 +28,16 @@ void task_print(int id, const char *title, const char *desc) {
     }
   }
   printf("%4d - %15s - %.*s", id, title, n, desc);
-  if (is_long) puts("...");
-  else putc('\n', stdout);
+  if (is_long)
+    puts("...");
+  else
+    putc('\n', stdout);
 } // task_print
 
 void task_details(const char *title, const char *desc) {
-  puts((const char*)title);
+  puts((const char *)title);
   if (desc) {
     puts("-----");
-    puts((const char*)desc);
+    puts((const char *)desc);
   }
 } // task_details
